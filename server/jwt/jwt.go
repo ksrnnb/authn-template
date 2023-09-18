@@ -10,7 +10,7 @@ import (
 
 var signingKey = []byte("sampleSigningKey")
 
-const issuer = "authn-template"
+const issuer = "passkey-impl"
 
 const UserIdKey = "user_id"
 const TokenKey = "token"
@@ -45,7 +45,7 @@ func Parse(tokenString string) (Token, error) {
 		return Token{}, errors.New("invalid token")
 	}
 
-	issuer, err := token.Claims.GetIssuer()
+	subject, err := token.Claims.GetSubject()
 	if err != nil {
 		return Token{}, err
 	}
@@ -54,7 +54,7 @@ func Parse(tokenString string) (Token, error) {
 		return Token{}, errors.New("invalid token")
 	}
 
-	return Token{UserId: issuer}, nil
+	return Token{UserId: subject}, nil
 }
 
 func newID() string {
